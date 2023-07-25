@@ -1,5 +1,7 @@
+import 'package:band_app/Services/socket_service.dart';
 import 'package:band_app/models/band.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,10 +20,26 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final socketService = Provider.of<SocketService>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Band Names'),
         centerTitle: true,
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 10),
+            child: (socketService.serverStatus == ServerStatus.Online)
+                ? const Icon(
+                    Icons.bolt,
+                    color: Colors.blue,
+                  )
+                : const Icon(
+                    Icons.offline_bolt,
+                    color: Colors.red,
+                  ),
+          )
+        ],
       ),
       body: ListView.builder(
         itemCount: bands.length,
